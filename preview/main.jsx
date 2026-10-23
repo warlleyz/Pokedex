@@ -1,6 +1,7 @@
 import { StrictMode, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import PokemonDetails from '../src/components/details/PokemonDetails.jsx'
+import TrainerList from '../src/components/trainers/TrainerList.jsx'
 import data from './pokedex-data.json'
 import '../src/index.css'
 import './preview.css'
@@ -47,6 +48,10 @@ export default function ModulesPreview() {
             </select>
           </label>
           <PokemonDetails pokemon={selectedPokemon} />
+        </section>
+        <section className="pk-preview-panel">
+          <h2>Treinadores</h2>
+          <TrainerList trainers={data.trainers} pokemon={data.pokemon} />
         </section>
       </main>
       <footer className="pk-preview-footer">POKÉBOX / PRÉVIA DOS MÓDULOS · 151 POKÉMON · DADOS OFICIAIS</footer>

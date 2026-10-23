@@ -1,0 +1,20 @@
+.pk-trainers { min-width: 0; color: var(--screen-text); }
+.pk-trainers-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; }
+.pk-trainers-choice { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; width: 100%; min-height: 70px; padding: 12px; border: 1px solid var(--screen-border); border-radius: 8px; background: var(--screen); color: var(--screen-text); text-align: left; }
+.pk-trainers-choice strong { font-size: 13px; overflow-wrap: anywhere; }
+.pk-trainers-choice span { color: var(--muted); font-size: 11px; }
+.pk-trainers-choice:hover, .pk-trainers-choice[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.pk-trainers-choice[aria-pressed="true"] { box-shadow: inset 3px 0 var(--accent); }
+.pk-trainers-profile { min-height: 140px; padding: 20px; border: 1px solid var(--screen-border); border-radius: 12px; background: var(--screen); }
+.pk-trainers-eyebrow { color: var(--accent); font-size: 10px; font-weight: 800; letter-spacing: 1.5px; }
+.pk-trainers-profile h3 { margin: 8px 0; overflow-wrap: anywhere; font-size: 24px; }
+.pk-trainers-profile h4 { margin: 22px 0 12px; font-size: 13px; }
+.pk-trainers-badges { display: inline-block; margin: 0; padding: 6px 10px; border: 1px solid var(--screen-border); border-radius: 6px; color: var(--accent); background: var(--accent-soft); font-size: 12px; }
+.pk-trainers-team { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0; padding: 0; list-style: none; }
+.pk-trainers-team li { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 12px; border: 1px solid var(--screen-border); border-radius: 7px; background: var(--screen-alt); }
+.pk-trainers-position { color: var(--accent); font-size: 11px; }
+.pk-trainers-team li > div { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.pk-trainers-number { color: var(--muted); font-size: 10px; }
+.pk-trainers-team strong { overflow-wrap: anywhere; font-size: 12px; }
+.pk-trainers-message { margin: 0; padding: 12px 0; color: var(--muted); line-height: 1.7; font-size: 13px; }
+@media (max-width: 400px) { .pk-trainers-team { grid-template-columns: 1fr; } .pk-trainers-profile { padding: 14px; } }
