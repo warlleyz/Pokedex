@@ -9,7 +9,6 @@
 }
 
 /* Cabeçalho */
-
 .pk-trainers-header {
     flex: 0 0 auto;
     display: flex;
@@ -38,7 +37,6 @@
 }
 
 /* Distribuição */
-
 .pk-trainers-layout {
     flex: 1 1 auto;
     min-width: 0;
@@ -83,7 +81,6 @@
 }
 
 /* Seleção */
-
 .pk-trainers-selector {
     flex: 0 0 auto;
     display: grid;
@@ -120,7 +117,6 @@
 }
 
 /* Perfil */
-
 .pk-trainers-profile {
     flex: 1 1 auto;
     min-height: 220px;
@@ -213,7 +209,6 @@
 }
 
 /* Equipe */
-
 .pk-trainers-team {
     flex: 1 1 auto;
     min-width: 0;
@@ -327,7 +322,6 @@
 }
 
 /* Resoluções intermediárias */
-
 @media (max-width: 1050px) {
     .pk-trainers-layout {
         grid-template-columns:
@@ -352,7 +346,6 @@
 }
 
 /* Tablets */
-
 @media (max-width: 760px) {
     .pk-trainers-layout {
         grid-template-columns: minmax(0, 1fr);
@@ -368,7 +361,6 @@
 }
 
 /* Celulares */
-
 @media (max-width: 430px) {
     .pk-trainers {
         gap: 11px;

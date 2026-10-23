@@ -19,7 +19,6 @@
 }
 
 /* Carcaça */
-
 .pd-device {
   position: relative;
   width: min(100%, 1560px);
@@ -54,7 +53,6 @@
 }
 
 /* Cabeçalho físico */
-
 .pd-hardware-header {
   position: relative;
   z-index: 1;
@@ -134,7 +132,6 @@
 }
 
 /* Moldura */
-
 .pd-display-frame {
   position: relative;
   z-index: 1;
@@ -171,7 +168,6 @@
 }
 
 /* Barra do sistema */
-
 .pd-systembar,
 .pd-system-indicator,
 .pd-system-actions {
@@ -213,7 +209,6 @@
 }
 
 /* Navegação */
-
 .pd-navigation-row {
   flex: 0 0 auto;
   min-width: 0;
@@ -263,7 +258,6 @@
 }
 
 /* Cabeçalho da página interna */
-
 .pd-page-heading {
   flex: 0 0 auto;
   display: flex;
@@ -296,7 +290,6 @@
 }
 
 /* Conteúdo */
-
 .pd-page-content {
   flex: 1 1 0;
   min-width: 0;
@@ -316,7 +309,6 @@
 }
 
 /* Tela inicial */
-
 .pd-home {
   width: 100%;
   min-width: 0;
@@ -382,7 +374,6 @@
 }
 
 /* Acessos aos módulos */
-
 .pd-home-features {
   min-width: 0;
   display: grid;
@@ -455,7 +446,6 @@
 }
 
 /* Rodapé do display */
-
 .pd-display-footer {
   flex: 0 0 auto;
   display: flex;
@@ -470,7 +460,6 @@
 }
 
 /* Controles físicos */
-
 .pd-hardware-footer {
   position: relative;
   z-index: 1;
@@ -530,7 +519,6 @@
 }
 
 /* Telas com pouca altura */
-
 @media (min-width: 901px) and (max-height: 750px) {
   .pd-device {
     padding: 10px 15px;
@@ -593,7 +581,6 @@
 }
 
 /* Tablets */
-
 @media (max-width: 900px) {
   .pd-environment {
     height: auto;
@@ -643,7 +630,6 @@
 }
 
 /* Celulares */
-
 @media (max-width: 600px) {
   .pd-environment {
     padding: 6px;

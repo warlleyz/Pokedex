@@ -54,7 +54,6 @@
 }
 
 /* Visualização do Pokémon */
-
 .pk-details-artwork {
   position: relative;
   flex: 1 1 auto;
@@ -127,7 +126,6 @@
 }
 
 /* Tipos */
-
 .pk-details-type-section {
   display: flex;
   flex-direction: column;
@@ -251,7 +249,6 @@
 }
 
 /* Estatísticas */
-
 .pk-details-stats {
   flex: 1 1 auto;
   min-width: 0;
@@ -362,7 +359,6 @@
 }
 
 /* Modo compacto para reutilização */
-
 .pk-details-compact {
   grid-template-columns: minmax(0, 1fr);
   gap: 12px;
@@ -399,7 +395,6 @@
 }
 
 /* Notebook: telas mais baixas */
-
 @media (min-width: 801px) and (max-height: 750px) {
   .pk-details {
     padding: 12px;
@@ -433,7 +428,6 @@
 }
 
 /* Tablet e celular */
-
 @media (max-width: 800px) {
   .pk-details {
     grid-template-columns: minmax(0, 1fr);

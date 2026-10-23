@@ -1,24 +1,460 @@
-.pk-comparison { min-width: 0; padding: clamp(14px, 2vw, 24px); border: 1px solid var(--screen-border); border-radius: 12px; background: var(--screen); color: var(--screen-text); }
-.pk-comparison-selectors, .pk-comparison-identities { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.pk-comparison-selectors label { display: grid; gap: 10px; min-width: 0; font-size: 13px; }
-.pk-comparison-selectors select { width: 100%; min-width: 0; min-height: 44px; padding: 10px; border: 1px solid var(--screen-border); border-radius: 8px; background: var(--screen-alt); color: var(--screen-text); font: inherit; }
-.pk-comparison-selectors select:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
-.pk-comparison-selectors select:disabled { opacity: 0.65; }
-.pk-comparison-message { color: var(--muted); font-size: 13px; line-height: 1.7; margin: 20px 0; }
-.pk-comparison-identities .pk-details { background: var(--screen-alt); }
-.pk-comparison-table { width: 100%; table-layout: fixed; border-collapse: collapse; margin-top: 26px; font-size: 13px; }
-.pk-comparison-table caption { margin-bottom: 14px; color: var(--muted); text-align: left; font-size: 12px; line-height: 1.6; }
-.pk-comparison-table th, .pk-comparison-table td { padding: 14px 12px; border-bottom: 1px solid var(--screen-border); text-align: left; vertical-align: middle; overflow-wrap: anywhere; }
-.pk-comparison-table th { color: var(--muted); font-weight: 600; }
-.pk-comparison-table thead th { color: var(--screen-text); }
-.pk-comparison-table td { font-variant-numeric: tabular-nums; }
-.pk-comparison-winner { background: var(--accent-soft); box-shadow: inset 3px 0 var(--accent); }
-.pk-comparison-winner strong, .pk-comparison-winner .pk-comparison-result { color: var(--accent); }
-.pk-comparison-result { display: block; min-height: 14px; margin-top: 7px; font-size: 11px; color: var(--muted); }
-.pk-comparison-track { display: block; height: 6px; overflow: hidden; margin-top: 9px; border-radius: 99px; background: var(--track); }
-.pk-comparison-track > span { display: block; height: 100%; border-radius: inherit; background: var(--accent); }
+.pk-comparison {
+  width: 100%;
+  min-width: 0;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  color: var(--screen-text);
+}
+
+/* Cabeçalho */
+.pk-comparison-header,
+.pk-comparison-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.pk-comparison-eyebrow {
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.pk-comparison-header h3 {
+  margin: 5px 0 0;
+  font-size: 20px;
+}
+
+.pk-comparison-header-tag {
+  padding: 7px 11px;
+  border: 1px solid var(--screen-border);
+  border-radius: 7px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* Seletores */
+.pk-comparison-selectors {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr);
+  align-items: end;
+  gap: 12px;
+}
+
+.pk-comparison-selectors label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.pk-comparison-selectors select {
+  width: 100%;
+  min-width: 0;
+  height: 41px;
+  padding: 8px 11px;
+  border: 1px solid var(--screen-border);
+  border-radius: 9px;
+  background: var(--screen-alt);
+  color: var(--screen-text);
+  font-size: 12px;
+}
+
+.pk-comparison-swap {
+  width: 44px;
+  height: 41px;
+  border: 1px solid var(--screen-border);
+  border-radius: 9px;
+  background: var(--screen-alt);
+  color: var(--accent);
+  font-size: 23px;
+}
+
+.pk-comparison-swap:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.pk-comparison-swap:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Identificação dos Pokémon */
+.pk-comparison-identities {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.pk-comparison-pokemon {
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid var(--screen-border);
+  border-radius: 12px;
+  background: var(--screen-alt);
+}
+
+.pk-comparison-pokemon-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+}
+
+.pk-comparison-pokemon-top span:last-child {
+  color: var(--accent);
+}
+
+.pk-comparison-pokemon-main {
+  display: grid;
+  grid-template-columns: minmax(100px, 0.8fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 15px;
+  margin-top: 7px;
+}
+
+.pk-comparison-artwork {
+  min-height: 135px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: radial-gradient(circle,
+      var(--accent-soft),
+      transparent 72%);
+}
+
+.pk-comparison-artwork img {
+  width: min(100%, 145px);
+  height: 135px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.15));
+}
+
+.pk-comparison-placeholder {
+  color: var(--muted);
+  font-size: 55px;
+}
+
+.pk-comparison-pokemon-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.pk-comparison-pokemon-info h4 {
+  margin: 0;
+  font-size: clamp(17px, 1.7vw, 24px);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.pk-comparison-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.pk-comparison-types span {
+  padding: 5px 9px;
+  border: 1px solid var(--screen-border);
+  border-radius: 99px;
+  background: var(--screen);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.pk-comparison-total {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pk-comparison-total span {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.pk-comparison-total strong {
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tabela */
+.pk-comparison-table-header {
+  margin-top: 3px;
+}
+
+.pk-comparison-table-header h4 {
+  margin: 4px 0 0;
+  font-size: 16px;
+}
+
+.pk-comparison-table-header>span {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.pk-comparison-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0 4px;
+  font-size: 12px;
+}
+
+.pk-comparison-table th,
+.pk-comparison-table td {
+  min-width: 0;
+  padding: 9px 12px;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.pk-comparison-table thead th {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.pk-comparison-table thead th:first-child,
+.pk-comparison-table tbody th {
+  width: 25%;
+}
+
+.pk-comparison-table tbody tr {
+  background: var(--screen-alt);
+}
+
+.pk-comparison-table tbody th {
+  border-radius: 7px 0 0 7px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.pk-comparison-table tbody td:last-child {
+  border-radius: 0 7px 7px 0;
+}
+
+.pk-comparison-stat-value {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.pk-comparison-stat-value strong {
+  font-size: 13px;
+}
+
+.pk-comparison-stat-value>span {
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.pk-comparison-track {
+  display: block;
+  width: 100%;
+  height: 6px;
+  margin-top: 7px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: var(--track);
+}
+
+.pk-comparison-track>span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+}
+
+.pk-comparison-winner {
+  background: var(--accent-soft);
+  box-shadow: inset 3px 0 var(--accent);
+}
+
+.pk-comparison-winner strong {
+  color: var(--accent);
+}
+
+.pk-comparison-tie {
+  background: var(--screen);
+}
+
+/* Resumo */
+.pk-comparison-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 22px;
+  padding: 12px;
+  border: 1px solid var(--screen-border);
+  border-radius: 9px;
+  background: var(--screen-alt);
+  color: var(--muted);
+  font-size: 11px;
+  text-align: center;
+}
+
+.pk-comparison-summary strong {
+  color: var(--accent);
+  font-size: 15px;
+}
+
+/* Estado inicial */
+.pk-comparison-empty {
+  flex: 1 1 auto;
+  min-height: 125px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 20px;
+  border: 1px dashed var(--screen-border);
+  border-radius: 11px;
+  text-align: center;
+}
+
+.pk-comparison-empty>span {
+  color: var(--accent);
+  font-size: 32px;
+}
+
+.pk-comparison-empty h4 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.pk-comparison-empty p {
+  max-width: 420px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* Telas intermediárias */
+@media (max-width: 1050px) {
+  .pk-comparison-pokemon-main {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .pk-comparison-artwork {
+    min-height: 90px;
+  }
+
+  .pk-comparison-artwork img {
+    height: 100px;
+  }
+
+  .pk-comparison-pokemon-info {
+    align-items: center;
+    text-align: center;
+  }
+
+  .pk-comparison-types {
+    justify-content: center;
+  }
+}
+
+/* Celulares */
 @media (max-width: 600px) {
-  .pk-comparison-selectors, .pk-comparison-identities { grid-template-columns: 1fr; }
-  .pk-comparison-table { font-size: 12px; }
-  .pk-comparison-table th, .pk-comparison-table td { padding: 12px 7px; }
+  .pk-comparison {
+    gap: 12px;
+  }
+
+  .pk-comparison-selectors {
+    grid-template-columns: minmax(0, 1fr) 36px minmax(0, 1fr);
+    gap: 5px;
+  }
+
+  .pk-comparison-selectors select {
+    padding: 6px;
+    font-size: 10px;
+  }
+
+  .pk-comparison-swap {
+    width: 36px;
+  }
+
+  .pk-comparison-identities {
+    gap: 7px;
+  }
+
+  .pk-comparison-pokemon {
+    padding: 8px;
+  }
+
+  .pk-comparison-artwork img {
+    height: 80px;
+  }
+
+  .pk-comparison-pokemon-info h4 {
+    font-size: 14px;
+  }
+
+  .pk-comparison-pokemon-top {
+    font-size: 9px;
+  }
+
+  .pk-comparison-table {
+    font-size: 10px;
+  }
+
+  .pk-comparison-table th,
+  .pk-comparison-table td {
+    padding: 8px 5px;
+  }
+
+  .pk-comparison-stat-value strong {
+    font-size: 11px;
+  }
+
+  .pk-comparison-summary {
+    font-size: 10px;
+  }
+}
+
+/* Compactação vertical */
+@media (min-width: 901px) and (max-height: 780px) {
+  .pk-comparison {
+    gap: 9px;
+  }
+
+  .pk-comparison-pokemon {
+    padding: 9px;
+  }
+
+  .pk-comparison-artwork {
+    min-height: 90px;
+  }
+
+  .pk-comparison-artwork img {
+    height: 95px;
+  }
+
+  .pk-comparison-table th,
+  .pk-comparison-table td {
+    padding-block: 6px;
+  }
 }
