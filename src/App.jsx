@@ -20,16 +20,17 @@ const types = Array.isArray(pokedexData.types)
   : []
 
 const navigation = [
-  { id: 'home', label: 'Início' },
-  { id: 'pokemon', label: 'Pokémon' },
-  { id: 'trainers', label: 'Treinadores' },
-  { id: 'comparison', label: 'Comparador' },
+  { id: 'home', label: 'Início', icon: 'home' },
+  { id: 'pokemon', label: 'Pokémon', icon: 'pokemon' },
+  { id: 'trainers', label: 'Treinadores', icon: 'trainers' },
+  { id: 'comparison', label: 'Comparador', icon: 'comparison' },
 ]
 
 function getInitialTheme() {
   try {
-    const saved = localStorage.getItem('pokedex-theme')
-      ?? localStorage.getItem('pokebox-theme')
+    const saved =
+      localStorage.getItem('pokedex-theme') ??
+      localStorage.getItem('pokebox-theme')
 
     return saved === 'light' ? 'light' : 'dark'
   } catch {
@@ -39,35 +40,109 @@ function getInitialTheme() {
 
 function Icon({ name }) {
   const icons = {
-    pokemon: '◈',
-    trainers: '◎',
-    comparison: '⇄',
-    home: '⌂',
+    home: (
+      <>
+        <path d="m3 10 9-7 9 7" />
+        <path d="M5 9v11h14V9" />
+        <path d="M9 20v-7h6v7" />
+      </>
+    ),
+    pokemon: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M3 12h18" />
+        <circle cx="12" cy="12" r="3" />
+      </>
+    ),
+    trainers: (
+      <>
+        <circle cx="12" cy="8" r="3" />
+        <path d="M5 20c0-4 3-7 7-7s7 3 7 7" />
+        <circle cx="12" cy="12" r="10" />
+      </>
+    ),
+    comparison: (
+      <>
+        <path d="M4 7h16" />
+        <path d="m16 3 4 4-4 4" />
+        <path d="M20 17H4" />
+        <path d="m8 13-4 4 4 4" />
+      </>
+    ),
+    theme: (
+      <>
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M19.07 4.93l-1.42 1.42M6.35 17.65l-1.42 1.42" />
+      </>
+    ),
+    moon: (
+      <path d="M20.5 14.5A9 9 0 0 1 9.5 3.5 9 9 0 1 0 20.5 14.5Z" />
+    ),
+    back: (
+      <>
+        <path d="m12 19-7-7 7-7" />
+        <path d="M5 12h14" />
+      </>
+    ),
+    arrow: (
+      <>
+        <path d="M5 12h14" />
+        <path d="m13 6 6 6-6 6" />
+      </>
+    ),
   }
 
   return (
-    <span aria-hidden="true" className="pd-icon">
-      {icons[name] ?? '•'}
-    </span>
+    <svg
+      viewBox="0 0 24 24"
+      width="20"
+      height="20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {icons[name] ?? icons.pokemon}
+    </svg>
   )
 }
 
 function HomeScreen({ onNavigate }) {
+  const features = [
+    {
+      id: 'pokemon',
+      title: 'Explorar Pokémon',
+      description: 'Catálogo, pesquisa, filtros e favoritos',
+    },
+    {
+      id: 'trainers',
+      title: 'Treinadores',
+      description: 'Perfis, insígnias e equipes',
+    },
+    {
+      id: 'comparison',
+      title: 'Comparador',
+      description: 'Compare os atributos de dois Pokémon',
+    },
+  ]
+
   return (
     <section className="pd-home" aria-labelledby="pd-home-title">
       <div className="pd-home-intro">
         <span className="pd-eyebrow">
-          SISTEMA DE CONSULTA POKÉMON
+          SUA JORNADA COMEÇA AQUI
         </span>
 
         <h2 id="pd-home-title">
-          Seu universo Pokémon.
-          <span> Em um só lugar.</span>
+          Explore o universo
+          <span> Pokémon.</span>
         </h2>
 
         <p>
-          Explore a Pokédex, conheça treinadores e compare
-          os atributos de diferentes Pokémon.
+          Consulte espécies, conheça treinadores e compare
+          atributos em um único dispositivo.
         </p>
 
         <div className="pd-home-summary">
@@ -84,58 +159,31 @@ function HomeScreen({ onNavigate }) {
       </div>
 
       <div className="pd-home-features">
-        <button
-          className="pd-feature pd-feature-primary"
-          type="button"
-          onClick={() => onNavigate('pokemon')}
-        >
-          <span className="pd-feature-icon">
-            <Icon name="pokemon" />
-          </span>
-          <span className="pd-feature-copy">
-            <strong>Explorar Pokémon</strong>
-            <small>
-              Catálogo, pesquisa, filtros e favoritos
-            </small>
-          </span>
-          <span className="pd-feature-arrow" aria-hidden="true">
-            ↗
-          </span>
-        </button>
+        {features.map((feature, index) => (
+          <button
+            key={feature.id}
+            type="button"
+            className={`pd-feature ${index === 0 ? 'pd-feature-primary' : ''
+              }`}
+            onClick={() => onNavigate(feature.id)}
+          >
+            <span className="pd-feature-icon">
+              <Icon name={feature.id} />
+            </span>
 
-        <button
-          className="pd-feature"
-          type="button"
-          onClick={() => onNavigate('trainers')}
-        >
-          <span className="pd-feature-icon">
-            <Icon name="trainers" />
-          </span>
-          <span className="pd-feature-copy">
-            <strong>Treinadores</strong>
-            <small>Perfis, insígnias e equipes</small>
-          </span>
-          <span className="pd-feature-arrow" aria-hidden="true">
-            ↗
-          </span>
-        </button>
+            <span className="pd-feature-copy">
+              <strong>{feature.title}</strong>
+              <small>{feature.description}</small>
+            </span>
 
-        <button
-          className="pd-feature"
-          type="button"
-          onClick={() => onNavigate('comparison')}
-        >
-          <span className="pd-feature-icon">
-            <Icon name="comparison" />
-          </span>
-          <span className="pd-feature-copy">
-            <strong>Comparador</strong>
-            <small>Analise atributos lado a lado</small>
-          </span>
-          <span className="pd-feature-arrow" aria-hidden="true">
-            ↗
-          </span>
-        </button>
+            <span
+              className="pd-feature-arrow"
+              aria-hidden="true"
+            >
+              <Icon name="arrow" />
+            </span>
+          </button>
+        ))}
       </div>
     </section>
   )
@@ -152,13 +200,9 @@ function App() {
     try {
       localStorage.setItem('pokedex-theme', theme)
     } catch {
-      // A preferência permanece ativa durante a sessão.
+      // O tema continua ativo durante a sessão.
     }
   }, [theme])
-
-  const currentPage = navigation.find(
-    (item) => item.id === page
-  )
 
   function navigate(nextPage) {
     setSelectedPokemon(null)
@@ -170,6 +214,15 @@ function App() {
     setPage('pokemon')
   }
 
+  function goBack() {
+    if (selectedPokemon) {
+      setSelectedPokemon(null)
+      return
+    }
+
+    navigate('home')
+  }
+
   function toggleTheme() {
     setTheme((current) =>
       current === 'dark' ? 'light' : 'dark'
@@ -177,49 +230,42 @@ function App() {
   }
 
   function renderPage() {
-    if (page === 'home') {
-      return <HomeScreen onNavigate={navigate} />
-    }
+    switch (page) {
+      case 'home':
+        return <HomeScreen onNavigate={navigate} />
 
-    if (page === 'pokemon') {
-      if (selectedPokemon) {
-        return (
-          <PokemonDetails
-            pokemon={selectedPokemon}
+      case 'pokemon':
+        return selectedPokemon ? (
+          <PokemonDetails pokemon={selectedPokemon} />
+        ) : (
+          <PokemonCatalog
+            pokemon={pokemon}
+            types={types}
+            onSelectPokemon={openPokemon}
           />
         )
-      }
 
-      return (
-        <PokemonCatalog
-          pokemon={pokemon}
-          types={types}
-          onSelectPokemon={openPokemon}
-        />
-      )
+      case 'trainers':
+        return (
+          <TrainerList
+            trainers={trainers}
+            pokemon={pokemon}
+          />
+        )
+
+      case 'comparison':
+        return <PokemonComparison pokemon={pokemon} />
+
+      default:
+        return <HomeScreen onNavigate={navigate} />
     }
-
-    if (page === 'trainers') {
-      return (
-        <TrainerList
-          trainers={trainers}
-          pokemon={pokemon}
-        />
-      )
-    }
-
-    if (page === 'comparison') {
-      return <PokemonComparison pokemon={pokemon} />
-    }
-
-    return null
   }
 
   return (
     <div className="pd-environment">
       <main
         className="pd-device"
-        aria-label="Dispositivo Pokédex"
+        aria-label="Pokédex interativa"
       >
         <header className="pd-hardware-header">
           <div className="pd-hardware-lights" aria-hidden="true">
@@ -234,7 +280,7 @@ function App() {
             <h1>POKÉDEX</h1>
           </div>
 
-          <span className="pd-model">MODEL PX-01</span>
+          <span className="pd-model">PX-01</span>
         </header>
 
         <div className="pd-display-frame">
@@ -242,84 +288,29 @@ function App() {
             className="pd-display"
             aria-label="Tela da Pokédex"
           >
-            <div className="pd-systembar">
-              <div className="pd-system-indicator">
-                <span className="pd-status-dot" />
-                <span>POKÉDEX OS</span>
-              </div>
-
-              <div className="pd-system-actions">
-                <span className="pd-system-version">
-                  SYSTEM ONLINE
-                </span>
-
+            <nav
+              className="pd-navigation"
+              aria-label="Navegação principal"
+            >
+              {navigation.map((item) => (
                 <button
-                  className="pd-theme-button"
+                  key={item.id}
                   type="button"
-                  onClick={toggleTheme}
-                  aria-label={
-                    theme === 'dark'
-                      ? 'Ativar tema claro'
-                      : 'Ativar tema escuro'
+                  className={
+                    page === item.id
+                      ? 'pd-navigation-active'
+                      : ''
                   }
-                  aria-pressed={theme === 'light'}
+                  aria-current={
+                    page === item.id ? 'page' : undefined
+                  }
+                  onClick={() => navigate(item.id)}
                 >
-                  {theme === 'dark' ? '☀' : '☾'}
+                  <Icon name={item.icon} />
+                  <span>{item.label}</span>
                 </button>
-              </div>
-            </div>
-
-            <div className="pd-navigation-row">
-              <nav
-                className="pd-navigation"
-                aria-label="Navegação principal"
-              >
-                {navigation.map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    className={
-                      page === item.id
-                        ? 'pd-navigation-active'
-                        : ''
-                    }
-                    aria-current={
-                      page === item.id ? 'page' : undefined
-                    }
-                    onClick={() => navigate(item.id)}
-                  >
-                    <Icon name={item.id} />
-                    <span>{item.label}</span>
-                  </button>
-                ))}
-              </nav>
-            </div>
-
-            {page !== 'home' && (
-              <div className="pd-page-heading">
-                <div>
-                  <span className="pd-eyebrow">
-                    POKÉDEX / {currentPage?.label.toUpperCase()}
-                  </span>
-
-                  <h2>
-                    {selectedPokemon
-                      ? selectedPokemon.name
-                      : currentPage?.label}
-                  </h2>
-                </div>
-
-                {selectedPokemon && (
-                  <button
-                    className="pd-back-button"
-                    type="button"
-                    onClick={() => setSelectedPokemon(null)}
-                  >
-                    ← Voltar ao catálogo
-                  </button>
-                )}
-              </div>
-            )}
+              ))}
+            </nav>
 
             <div
               className={`pd-page-content ${page === 'home' ? 'pd-page-home' : ''
@@ -327,15 +318,6 @@ function App() {
             >
               {renderPage()}
             </div>
-
-            <footer className="pd-display-footer">
-              <span>POKÉDEX SYSTEM / 2026</span>
-              <span>
-                {page === 'home'
-                  ? 'MENU PRINCIPAL'
-                  : currentPage?.label.toUpperCase()}
-              </span>
-            </footer>
           </section>
         </div>
 
@@ -346,20 +328,42 @@ function App() {
             ))}
           </div>
 
-          <div className="pd-hardware-description">
-            <span className="pd-hardware-description-dot" />
-            <span>POKÉDEX / DIGITAL DATABASE</span>
-          </div>
+          <div className="pd-physical-controls">
+            {page !== 'home' && (
+              <button
+                type="button"
+                className="pd-physical-button"
+                onClick={goBack}
+                aria-label={
+                  selectedPokemon
+                    ? 'Voltar ao catálogo'
+                    : 'Voltar ao início'
+                }
+                title={
+                  selectedPokemon
+                    ? 'Voltar ao catálogo'
+                    : 'Voltar ao início'
+                }
+              >
+                <Icon name={selectedPokemon ? 'back' : 'home'} />
+              </button>
+            )}
 
-          <button
-            type="button"
-            className="pd-home-control"
-            onClick={() => navigate('home')}
-            aria-label="Voltar à tela inicial"
-            title="Tela inicial"
-          >
-            <Icon name="home" />
-          </button>
+            <button
+              type="button"
+              className="pd-physical-button pd-theme-control"
+              onClick={toggleTheme}
+              aria-label={
+                theme === 'dark'
+                  ? 'Ativar tema claro'
+                  : 'Ativar tema escuro'
+              }
+              aria-pressed={theme === 'light'}
+              title="Alternar tema"
+            >
+              <Icon name={theme === 'dark' ? 'theme' : 'moon'} />
+            </button>
+          </div>
         </footer>
       </main>
     </div>
