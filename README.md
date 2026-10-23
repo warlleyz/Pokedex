@@ -1,16 +1,67 @@
-# React + Vite
+# PokéBox
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Pokédex em React + Vite com visual de dispositivo de dois painéis e temas claro e escuro. Esta branch entrega os módulos do integrante 2, preparados para receber dados do catálogo por props.
 
-Currently, two official plugins are available:
+## Executar
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Ambiente verificado: Node 24.18.0 e npm 11.16.0.
 
-## React Compiler
+```sh
+npm ci
+npm run dev
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+No Windows, use `npm.cmd` se o PowerShell bloquear `npm.ps1`.
 
-## Expanding the ESLint configuration
+- Interface-base preservada: http://localhost:5173/
+- Prévia funcional dos três módulos: http://localhost:5173/preview/
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Use a porta indicada pelo Vite caso a 5173 esteja ocupada.
+
+## Módulos
+
+- `PokemonDetails`: identificação, imagem, tipos, seis atributos, barras e tratamento de dados ausentes.
+- `TrainerList`: seleção de treinador, insígnias e equipes por ID, preservando repetições.
+- `PokemonComparison`: dois Pokémon distintos, atributos lado a lado, maiores valores, diferenças e empates.
+
+Todos recebem dados por props e usam os temas existentes. Nenhuma dependência nova foi adicionada.
+
+## Organização
+
+```text
+src/components/
+  pokemon.js
+  details/PokemonDetails.jsx + PokemonDetails.css
+  trainers/TrainerList.jsx + TrainerList.css
+  comparison/PokemonComparison.jsx + PokemonComparison.css
+preview/
+  index.html
+  main.jsx
+  ModulesPreview.jsx
+  preview.css
+  pokedex-data.json
+```
+
+`src/App.jsx`, `src/App.css` e `src/index.css` foram preservados. Os componentes não importam JSON nem fazem fetch. A prévia carrega sua cópia oficial uma única vez, sem criar outra leitura no aplicativo principal.
+
+O catálogo, a pesquisa, os filtros, a ordenação, os favoritos e a montagem final continuam com o integrante 1. Veja os [contratos e o guia de integração](docs/integracao-modulos.md). A [análise inicial](docs/etapa-01-analise.md) registra a arquitetura encontrada.
+
+## Dados e imagens
+
+- [Enunciado oficial](https://github.com/joaopauloaramuni/desenvolvimento-e-integracao-de-aplicacoes-web/blob/main/ATIVIDADES/ATIVIDADE%2003.md).
+- [JSON oficial](https://github.com/joaopauloaramuni/desenvolvimento-e-integracao-de-aplicacoes-web/blob/main/ATIVIDADES/ATIVIDADE%2003%20-%20JSON/data/pokedex-data.json): 151 Pokémon, 18 tipos e 12 treinadores; cópia da prévia em `preview/pokedex-data.json`.
+- Imagens: [PokeAPI/sprites](https://github.com/PokeAPI/sprites), arte oficial derivada do ID, mantendo a fonte da interface-base. Atributos não dependem de API externa. Se a imagem falhar, os dados continuam disponíveis.
+
+O JSON é mantido sem inventar propriedades: Mew não possui tipos, Team Rocket possui zero insígnias e algumas equipes têm Pokémon repetidos.
+
+## Validar e gerar produção
+
+```sh
+npm run lint
+npm run build
+npm run preview
+```
+
+O `vite.config.js` mantém a entrada original e inclui a prévia para que o build valide os novos módulos. Saídas: `dist/index.html` e `dist/preview/index.html`. O servidor de produção normalmente usa http://localhost:4173/preview/.
+
+As validações de dados, interação e responsividade estão registradas no [guia de integração](docs/integracao-modulos.md). A branch foi preparada para revisão em dupla, sem push ou merge automático.
