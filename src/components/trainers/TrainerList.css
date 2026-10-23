@@ -1,20 +1,401 @@
-.pk-trainers { min-width: 0; color: var(--screen-text); }
-.pk-trainers-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; }
-.pk-trainers-choice { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; width: 100%; min-height: 70px; padding: 12px; border: 1px solid var(--screen-border); border-radius: 8px; background: var(--screen); color: var(--screen-text); text-align: left; }
-.pk-trainers-choice strong { font-size: 13px; overflow-wrap: anywhere; }
-.pk-trainers-choice span { color: var(--muted); font-size: 11px; }
-.pk-trainers-choice:hover, .pk-trainers-choice[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
-.pk-trainers-choice[aria-pressed="true"] { box-shadow: inset 3px 0 var(--accent); }
-.pk-trainers-profile { min-height: 140px; padding: 20px; border: 1px solid var(--screen-border); border-radius: 12px; background: var(--screen); }
-.pk-trainers-eyebrow { color: var(--accent); font-size: 10px; font-weight: 800; letter-spacing: 1.5px; }
-.pk-trainers-profile h3 { margin: 8px 0; overflow-wrap: anywhere; font-size: 24px; }
-.pk-trainers-profile h4 { margin: 22px 0 12px; font-size: 13px; }
-.pk-trainers-badges { display: inline-block; margin: 0; padding: 6px 10px; border: 1px solid var(--screen-border); border-radius: 6px; color: var(--accent); background: var(--accent-soft); font-size: 12px; }
-.pk-trainers-team { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0; padding: 0; list-style: none; }
-.pk-trainers-team li { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 12px; border: 1px solid var(--screen-border); border-radius: 7px; background: var(--screen-alt); }
-.pk-trainers-position { color: var(--accent); font-size: 11px; }
-.pk-trainers-team li > div { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.pk-trainers-number { color: var(--muted); font-size: 10px; }
-.pk-trainers-team strong { overflow-wrap: anywhere; font-size: 12px; }
-.pk-trainers-message { margin: 0; padding: 12px 0; color: var(--muted); line-height: 1.7; font-size: 13px; }
-@media (max-width: 400px) { .pk-trainers-team { grid-template-columns: 1fr; } .pk-trainers-profile { padding: 14px; } }
+.pk-trainers {
+    width: 100%;
+    min-width: 0;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    color: var(--screen-text);
+}
+
+/* Cabeçalho */
+
+.pk-trainers-header {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.pk-trainers-eyebrow {
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+}
+
+.pk-trainers-header h3 {
+    margin: 5px 0 0;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.pk-trainers-total {
+    color: var(--muted);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* Distribuição */
+
+.pk-trainers-layout {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+    display: grid;
+    grid-template-columns:
+        minmax(240px, 0.75fr) minmax(0, 1.25fr);
+    gap: 16px;
+}
+
+.pk-trainers-sidebar,
+.pk-trainers-team-panel {
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: clamp(13px, 1.5vw, 22px);
+    border: 1px solid var(--screen-border);
+    border-radius: 13px;
+    background: var(--screen-alt);
+}
+
+.pk-trainers-section-title {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--screen-border);
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.pk-trainers-section-title span:last-child {
+    color: var(--muted);
+    text-align: right;
+    letter-spacing: 0;
+}
+
+/* Seleção */
+
+.pk-trainers-selector {
+    flex: 0 0 auto;
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr) 38px;
+    align-items: center;
+    gap: 7px;
+}
+
+.pk-trainers-selector button,
+.pk-trainers-selector select {
+    height: 40px;
+    border: 1px solid var(--screen-border);
+    border-radius: 9px;
+    background: var(--screen);
+    color: var(--screen-text);
+}
+
+.pk-trainers-selector button {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.pk-trainers-selector button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.pk-trainers-selector select {
+    min-width: 0;
+    width: 100%;
+    padding: 0 10px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* Perfil */
+
+.pk-trainers-profile {
+    flex: 1 1 auto;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px;
+    border: 1px solid var(--screen-border);
+    border-radius: 12px;
+    background:
+        radial-gradient(circle at 50% 35%,
+            var(--accent-soft),
+            transparent 72%),
+        var(--screen);
+    text-align: center;
+}
+
+.pk-trainers-avatar {
+    width: clamp(65px, 8vw, 105px);
+    height: clamp(65px, 8vw, 105px);
+    display: grid;
+    place-items: center;
+    border: 2px solid var(--accent);
+    border-radius: 23px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: clamp(30px, 4vw, 48px);
+    font-weight: 900;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+.pk-trainers-profile h4 {
+    margin: 0;
+    font-size: clamp(20px, 2vw, 29px);
+    overflow-wrap: anywhere;
+}
+
+.pk-trainers-profile-stats {
+    width: min(100%, 270px);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.pk-trainers-profile-stats>div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 8px;
+    border: 1px solid var(--screen-border);
+    border-radius: 9px;
+    background: var(--screen-alt);
+}
+
+.pk-trainers-profile-stats span {
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+}
+
+.pk-trainers-profile-stats strong {
+    color: var(--screen-text);
+    font-size: 24px;
+    font-variant-numeric: tabular-nums;
+}
+
+.pk-trainers-sidebar-footer {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.pk-trainers-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #47dea9;
+    box-shadow: 0 0 9px #47dea955;
+}
+
+/* Equipe */
+
+.pk-trainers-team {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: minmax(145px, 1fr);
+    gap: 11px;
+    align-content: start;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.pk-trainers-member {
+    position: relative;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 14px 8px;
+    border: 1px solid var(--screen-border);
+    border-radius: 11px;
+    background: var(--screen);
+    text-align: center;
+}
+
+.pk-trainers-member-position {
+    position: absolute;
+    top: 10px;
+    left: 11px;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.pk-trainers-member-art {
+    width: 100%;
+    min-height: 70px;
+    display: grid;
+    place-items: center;
+}
+
+.pk-trainers-member-art img {
+    width: clamp(65px, 7vw, 100px);
+    height: clamp(65px, 7vw, 100px);
+    object-fit: contain;
+    filter: drop-shadow(0 7px 8px rgba(0, 0, 0, 0.15));
+}
+
+.pk-trainers-member-art>span {
+    color: var(--muted);
+    font-size: 28px;
+}
+
+.pk-trainers-member-number {
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.pk-trainers-member strong {
+    max-width: 100%;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.pk-trainers-team-footer {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--screen-border);
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+}
+
+.pk-trainers-no-team {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--muted);
+    text-align: center;
+}
+
+.pk-trainers-no-team span {
+    color: var(--accent);
+    font-size: 42px;
+}
+
+.pk-trainers-no-team p {
+    max-width: 230px;
+    font-size: 13px;
+}
+
+.pk-trainers-empty {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.pk-trainers-empty p {
+    color: var(--muted);
+}
+
+/* Resoluções intermediárias */
+
+@media (max-width: 1050px) {
+    .pk-trainers-layout {
+        grid-template-columns:
+            minmax(210px, 0.8fr) minmax(0, 1.2fr);
+        gap: 10px;
+    }
+
+    .pk-trainers-sidebar,
+    .pk-trainers-team-panel {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .pk-trainers-team {
+        gap: 7px;
+        grid-auto-rows: minmax(130px, 1fr);
+    }
+
+    .pk-trainers-member {
+        padding: 11px 5px;
+    }
+}
+
+/* Tablets */
+
+@media (max-width: 760px) {
+    .pk-trainers-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .pk-trainers-profile {
+        min-height: 175px;
+    }
+
+    .pk-trainers-team {
+        grid-auto-rows: minmax(140px, 1fr);
+    }
+}
+
+/* Celulares */
+
+@media (max-width: 430px) {
+    .pk-trainers {
+        gap: 11px;
+    }
+
+    .pk-trainers-header h3 {
+        font-size: 17px;
+    }
+
+    .pk-trainers-total {
+        font-size: 10px;
+    }
+
+    .pk-trainers-team {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .pk-trainers-member-art img {
+        width: 72px;
+        height: 72px;
+    }
+
+    .pk-trainers-profile {
+        min-height: 170px;
+    }
+
+    .pk-trainers-team-footer {
+        font-size: 8px;
+    }
+}
