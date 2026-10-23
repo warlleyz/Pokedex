@@ -1,67 +1,111 @@
-# PokéBox
+# Pokédex
 
-Pokédex em React + Vite com visual de dispositivo de dois painéis e temas claro e escuro. Esta branch entrega os módulos do integrante 2, preparados para receber dados do catálogo por props.
+Aplicação web desenvolvida com **React + Vite** para consulta de informações sobre Pokémon e treinadores.
 
-## Executar
+O projeto apresenta uma interface inspirada na Pokédex, com visual de dispositivo eletrônico, navegação entre módulos e temas claro e escuro.
 
-Ambiente verificado: Node 24.18.0 e npm 11.16.0.
+## Funcionalidades
 
-```sh
+- Catálogo com imagens, números, nomes e tipos dos Pokémon.
+- Pesquisa por nome ou número.
+- Filtro por tipo.
+- Ordenação por número, nome e atributos.
+- Sistema de favoritos com persistência local.
+- Paginação do catálogo.
+- Visualização detalhada dos seis atributos base.
+- Consulta de treinadores, insígnias e equipes.
+- Comparação de dois Pokémon, com destaque dos maiores atributos e empates.
+- Navegação entre módulos.
+- Temas claro e escuro.
+- Interface adaptativa para diferentes tamanhos de tela.
+
+## Tecnologias
+
+- React
+- JavaScript
+- Vite
+- CSS
+- HTML
+- Git e GitHub
+
+## Como executar
+
+**Pré-requisitos:** Node.js e npm compatíveis com as dependências do projeto.
+
+Clone o repositório:
+
+```bash
+git clone https://github.com/warlleyz/Pokedex.git
+cd Pokedex
+```
+
+Instale as dependências:
+
+```bash
 npm ci
+```
+
+Inicie o servidor de desenvolvimento:
+
+```bash
 npm run dev
 ```
 
-No Windows, use `npm.cmd` se o PowerShell bloquear `npm.ps1`.
+Abra o endereço informado pelo Vite no navegador.
 
-- Interface-base preservada: http://localhost:5173/
-- Prévia funcional dos três módulos: http://localhost:5173/preview/
+## Validação
 
-Use a porta indicada pelo Vite caso a 5173 esteja ocupada.
+Verifique o código:
 
-## Módulos
+```bash
+npm run lint
+```
 
-- `PokemonDetails`: identificação, imagem, tipos, seis atributos, barras e tratamento de dados ausentes.
-- `TrainerList`: seleção de treinador, insígnias e equipes por ID, preservando repetições.
-- `PokemonComparison`: dois Pokémon distintos, atributos lado a lado, maiores valores, diferenças e empates.
+Gere a versão de produção:
 
-Todos recebem dados por props e usam os temas existentes. Nenhuma dependência nova foi adicionada.
+```bash
+npm run build
+```
+
+Visualize a versão gerada:
+
+```bash
+npm run preview
+```
 
 ## Organização
 
 ```text
-src/components/
-  pokemon.js
-  details/PokemonDetails.jsx + PokemonDetails.css
-  trainers/TrainerList.jsx + TrainerList.css
-  comparison/PokemonComparison.jsx + PokemonComparison.css
-preview/
-  index.html
-  main.jsx
-  ModulesPreview.jsx
-  preview.css
-  pokedex-data.json
+src/
+  components/
+    catalog/
+    comparison/
+    details/
+    trainers/
+    pokemon.js
+  data/
+    pokedex-data.json
+  App.jsx
+  App.css
+  index.css
 ```
 
-`src/App.jsx`, `src/App.css` e `src/index.css` foram preservados. Os componentes não importam JSON nem fazem fetch. A prévia carrega sua cópia oficial uma única vez, sem criar outra leitura no aplicativo principal.
+Os componentes são independentes e recebem os registros por propriedades. A aplicação principal gerencia a navegação, o tema e a seleção dos Pokémon.
 
-O catálogo, a pesquisa, os filtros, a ordenação, os favoritos e a montagem final continuam com o integrante 1. Veja os [contratos e o guia de integração](docs/integracao-modulos.md). A [análise inicial](docs/etapa-01-analise.md) registra a arquitetura encontrada.
+## Fonte dos dados
 
-## Dados e imagens
+Os dados utilizados são provenientes do JSON fornecido na atividade acadêmica:
 
-- [Enunciado oficial](https://github.com/joaopauloaramuni/desenvolvimento-e-integracao-de-aplicacoes-web/blob/main/ATIVIDADES/ATIVIDADE%2003.md).
-- [JSON oficial](https://github.com/joaopauloaramuni/desenvolvimento-e-integracao-de-aplicacoes-web/blob/main/ATIVIDADES/ATIVIDADE%2003%20-%20JSON/data/pokedex-data.json): 151 Pokémon, 18 tipos e 12 treinadores; cópia da prévia em `preview/pokedex-data.json`.
-- Imagens: [PokeAPI/sprites](https://github.com/PokeAPI/sprites), arte oficial derivada do ID, mantendo a fonte da interface-base. Atributos não dependem de API externa. Se a imagem falhar, os dados continuam disponíveis.
+[JSON oficial da atividade](https://github.com/joaopauloaramuni/desenvolvimento-e-integracao-de-aplicacoes-web/blob/main/ATIVIDADES/ATIVIDADE%2003%20-%20JSON/data/pokedex-data.json)
 
-O JSON é mantido sem inventar propriedades: Mew não possui tipos, Team Rocket possui zero insígnias e algumas equipes têm Pokémon repetidos.
+As imagens são obtidas do repositório público de sprites da PokéAPI.
 
-## Validar e gerar produção
+## Contexto acadêmico
 
-```sh
-npm run lint
-npm run build
-npm run preview
-```
+Projeto desenvolvido em dupla para a disciplina de Desenvolvimento e Integração de Aplicações Web.
 
-O `vite.config.js` mantém a entrada original e inclui a prévia para que o build valide os novos módulos. Saídas: `dist/index.html` e `dist/preview/index.html`. O servidor de produção normalmente usa http://localhost:4173/preview/.
+**Atividade:** [Atividade 03 — Pokédex](https://github.com/joaopauloaramuni/desenvolvimento-e-integracao-de-aplicacoes-web/blob/main/ATIVIDADES/ATIVIDADE%2003.md).
 
-As validações de dados, interação e responsividade estão registradas no [guia de integração](docs/integracao-modulos.md). A branch foi preparada para revisão em dupla, sem push ou merge automático.
+## Repositório
+
+[github.com/warlleyz/Pokedex](https://github.com/warlleyz/Pokedex)
