@@ -1,256 +1,367 @@
 
 import { useEffect, useState } from 'react'
+import PokemonCatalog from './components/catalog/PokemonCatalog.jsx'
+import PokemonDetails from './components/details/PokemonDetails.jsx'
+import TrainerList from './components/trainers/TrainerList.jsx'
+import PokemonComparison from './components/comparison/PokemonComparison.jsx'
+import pokedexData from './data/pokedex-data.json'
 import './App.css'
 
-const stats = [
-  { label: 'HP', value: 45 },
-  { label: 'ATK', value: 49 },
-  { label: 'DEF', value: 49 },
-  { label: 'SP.ATK', value: 65 },
-  { label: 'SP.DEF', value: 65 },
-  { label: 'SPD', value: 45 },
-]
+const pokemon = Array.isArray(pokedexData.pokemon)
+  ? pokedexData.pokemon
+  : []
 
-const slots = Array.from({ length: 12 }, (_, index) => index + 1)
+const trainers = Array.isArray(pokedexData.trainers)
+  ? pokedexData.trainers
+  : []
+
+const types = Array.isArray(pokedexData.types)
+  ? pokedexData.types
+  : []
+
+const navigation = [
+  { id: 'home', label: 'Início' },
+  { id: 'pokemon', label: 'Pokémon' },
+  { id: 'trainers', label: 'Treinadores' },
+  { id: 'comparison', label: 'Comparador' },
+]
 
 function getInitialTheme() {
   try {
-    return localStorage.getItem('pokebox-theme') === 'light'
-      ? 'light'
-      : 'dark'
+    const saved = localStorage.getItem('pokedex-theme')
+      ?? localStorage.getItem('pokebox-theme')
+
+    return saved === 'light' ? 'light' : 'dark'
   } catch {
     return 'dark'
   }
 }
 
+function Icon({ name }) {
+  const icons = {
+    pokemon: '◈',
+    trainers: '◎',
+    comparison: '⇄',
+    home: '⌂',
+  }
+
+  return (
+    <span aria-hidden="true" className="pd-icon">
+      {icons[name] ?? '•'}
+    </span>
+  )
+}
+
+function HomeScreen({ onNavigate }) {
+  return (
+    <section className="pd-home" aria-labelledby="pd-home-title">
+      <div className="pd-home-intro">
+        <span className="pd-eyebrow">
+          SISTEMA DE CONSULTA POKÉMON
+        </span>
+
+        <h2 id="pd-home-title">
+          Seu universo Pokémon.
+          <span> Em um só lugar.</span>
+        </h2>
+
+        <p>
+          Explore a Pokédex, conheça treinadores e compare
+          os atributos de diferentes Pokémon.
+        </p>
+
+        <div className="pd-home-summary">
+          <div>
+            <strong>{pokemon.length}</strong>
+            <span>Pokémon</span>
+          </div>
+
+          <div>
+            <strong>{trainers.length}</strong>
+            <span>Treinadores</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="pd-home-features">
+        <button
+          className="pd-feature pd-feature-primary"
+          type="button"
+          onClick={() => onNavigate('pokemon')}
+        >
+          <span className="pd-feature-icon">
+            <Icon name="pokemon" />
+          </span>
+          <span className="pd-feature-copy">
+            <strong>Explorar Pokémon</strong>
+            <small>
+              Catálogo, pesquisa, filtros e favoritos
+            </small>
+          </span>
+          <span className="pd-feature-arrow" aria-hidden="true">
+            ↗
+          </span>
+        </button>
+
+        <button
+          className="pd-feature"
+          type="button"
+          onClick={() => onNavigate('trainers')}
+        >
+          <span className="pd-feature-icon">
+            <Icon name="trainers" />
+          </span>
+          <span className="pd-feature-copy">
+            <strong>Treinadores</strong>
+            <small>Perfis, insígnias e equipes</small>
+          </span>
+          <span className="pd-feature-arrow" aria-hidden="true">
+            ↗
+          </span>
+        </button>
+
+        <button
+          className="pd-feature"
+          type="button"
+          onClick={() => onNavigate('comparison')}
+        >
+          <span className="pd-feature-icon">
+            <Icon name="comparison" />
+          </span>
+          <span className="pd-feature-copy">
+            <strong>Comparador</strong>
+            <small>Analise atributos lado a lado</small>
+          </span>
+          <span className="pd-feature-arrow" aria-hidden="true">
+            ↗
+          </span>
+        </button>
+      </div>
+    </section>
+  )
+}
+
 function App() {
   const [theme, setTheme] = useState(getInitialTheme)
+  const [page, setPage] = useState('home')
+  const [selectedPokemon, setSelectedPokemon] = useState(null)
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme
 
     try {
-      localStorage.setItem('pokebox-theme', theme)
+      localStorage.setItem('pokedex-theme', theme)
     } catch {
-      // O tema continua funcional sem armazenamento.
+      // A preferência permanece ativa durante a sessão.
     }
   }, [theme])
 
+  const currentPage = navigation.find(
+    (item) => item.id === page
+  )
+
+  function navigate(nextPage) {
+    setSelectedPokemon(null)
+    setPage(nextPage)
+  }
+
+  function openPokemon(item) {
+    setSelectedPokemon(item)
+    setPage('pokemon')
+  }
+
   function toggleTheme() {
-    setTheme((current) => current === 'dark' ? 'light' : 'dark')
+    setTheme((current) =>
+      current === 'dark' ? 'light' : 'dark'
+    )
+  }
+
+  function renderPage() {
+    if (page === 'home') {
+      return <HomeScreen onNavigate={navigate} />
+    }
+
+    if (page === 'pokemon') {
+      if (selectedPokemon) {
+        return (
+          <PokemonDetails
+            pokemon={selectedPokemon}
+          />
+        )
+      }
+
+      return (
+        <PokemonCatalog
+          pokemon={pokemon}
+          types={types}
+          onSelectPokemon={openPokemon}
+        />
+      )
+    }
+
+    if (page === 'trainers') {
+      return (
+        <TrainerList
+          trainers={trainers}
+          pokemon={pokemon}
+        />
+      )
+    }
+
+    if (page === 'comparison') {
+      return <PokemonComparison pokemon={pokemon} />
+    }
+
+    return null
   }
 
   return (
-    <div className="app-shell">
-      <header className="app-header">
-        <div className="brand">
-          <div className="brand-icon" aria-hidden="true">
-            <span />
+    <div className="pd-environment">
+      <main
+        className="pd-device"
+        aria-label="Dispositivo Pokédex"
+      >
+        <header className="pd-hardware-header">
+          <div className="pd-hardware-lights" aria-hidden="true">
+            <span className="pd-light-main" />
+            <span className="pd-light pd-light-red" />
+            <span className="pd-light pd-light-yellow" />
+            <span className="pd-light pd-light-green" />
           </div>
-          <div>
-            <span className="brand-overline">POKÉMON MANAGEMENT SYSTEM</span>
-            <h1>POKÉ<span>BOX</span></h1>
-          </div>
-        </div>
 
-        <div className="header-actions">
-          <div className="system-status">
-            <span className="online-dot" />
-            <span>SYSTEM ONLINE</span>
+          <div className="pd-brand">
+            <span>POKÉMON DATABASE SYSTEM</span>
+            <h1>POKÉDEX</h1>
           </div>
-          <button
-            className="theme-toggle"
-            type="button"
-            onClick={toggleTheme}
-            aria-label={
-              theme === 'dark'
-                ? 'Ativar tema claro'
-                : 'Ativar tema escuro'
-            }
-            aria-pressed={theme === 'light'}
-            title="Alternar tema"
+
+          <span className="pd-model">MODEL PX-01</span>
+        </header>
+
+        <div className="pd-display-frame">
+          <section
+            className="pd-display"
+            aria-label="Tela da Pokédex"
           >
-            <span aria-hidden="true">
-              {theme === 'dark' ? '☀' : '☾'}
-            </span>
-            <span>{theme === 'dark' ? 'Light' : 'Dark'}</span>
-          </button>
-        </div>
-      </header>
-
-      <main className="device" aria-label="Interface PokéBox">
-        <section className="device-half device-left">
-          <div className="module-header">
-            <div className="module-identity">
-              <span className="module-label">POKÉMON DATABASE</span>
-              <strong className="module-title">BULBASAUR</strong>
-            </div>
-            <span className="pokemon-number">#001</span>
-          </div>
-
-          <div className="screen pokemon-screen">
-            <div className="screen-topline">
-              <span>POKÉMON VIEWER</span>
-              <span>GEN 01</span>
-            </div>
-
-            <div className="pokemon-stage">
-              <div className="stage-ring stage-ring-outer" />
-              <div className="stage-ring stage-ring-inner" />
-              <div className="stage-crosshair stage-crosshair-x" />
-              <div className="stage-crosshair stage-crosshair-y" />
-              <img
-                className="pokemon-image"
-                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
-                alt="Bulbasaur"
-              />
-              <div className="stage-ground" />
-            </div>
-
-            <div className="screen-bottomline">
-              <span>SPECIMEN 001</span>
-              <span className="live-marker">● PREVIEW</span>
-            </div>
-          </div>
-
-          <div className="specimen-toolbar">
-            <div className="status-lights" aria-label="Indicadores decorativos">
-              <span />
-              <span />
-              <span />
-            </div>
-            <span className="toolbar-title">SPECIMEN PROFILE</span>
-            <span className="toolbar-chip">NORMAL</span>
-          </div>
-
-          <div className="screen description-screen">
-            <div className="section-label">
-              <span>DATABASE ENTRY</span>
-              <span>001 / KANTO</span>
-            </div>
-            <p>
-              A strange seed was planted on its back at birth.
-              The plant sprouts and grows with this Pokémon.
-            </p>
-          </div>
-
-          <div className="panel-bottom">
-            <span>POKÉBOX / TERMINAL 01</span>
-            <span>DATABASE PREVIEW</span>
-          </div>
-        </section>
-
-        <div className="device-spine" aria-hidden="true">
-          <span className="spine-joint" />
-          <span className="spine-light" />
-          <span className="spine-joint" />
-        </div>
-
-        <section className="device-half device-right">
-          <div className="right-header">
-            <div>
-              <span className="module-label">POKÉBOX / ANALYTICS</span>
-              <h2>Pokémon Overview</h2>
-            </div>
-            <span className="right-header-mark">PKB-01</span>
-          </div>
-
-          <div className="right-top">
-            <div className="screen stat-screen">
-              <div className="section-label">
-                <span>BASE STATISTICS</span>
-                <span>BST 318</span>
+            <div className="pd-systembar">
+              <div className="pd-system-indicator">
+                <span className="pd-status-dot" />
+                <span>POKÉDEX OS</span>
               </div>
 
-              <div className="stat-list">
-                {stats.map((stat) => (
-                  <div className="stat-row" key={stat.label}>
-                    <span className="stat-name">{stat.label}</span>
-                    <div className="stat-track">
-                      <span style={{ width: `${stat.value / 255 * 100}%` }} />
-                    </div>
-                    <strong>{stat.value}</strong>
-                  </div>
+              <div className="pd-system-actions">
+                <span className="pd-system-version">
+                  SYSTEM ONLINE
+                </span>
+
+                <button
+                  className="pd-theme-button"
+                  type="button"
+                  onClick={toggleTheme}
+                  aria-label={
+                    theme === 'dark'
+                      ? 'Ativar tema claro'
+                      : 'Ativar tema escuro'
+                  }
+                  aria-pressed={theme === 'light'}
+                >
+                  {theme === 'dark' ? '☀' : '☾'}
+                </button>
+              </div>
+            </div>
+
+            <div className="pd-navigation-row">
+              <nav
+                className="pd-navigation"
+                aria-label="Navegação principal"
+              >
+                {navigation.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className={
+                      page === item.id
+                        ? 'pd-navigation-active'
+                        : ''
+                    }
+                    aria-current={
+                      page === item.id ? 'page' : undefined
+                    }
+                    onClick={() => navigate(item.id)}
+                  >
+                    <Icon name={item.id} />
+                    <span>{item.label}</span>
+                  </button>
                 ))}
-              </div>
+              </nav>
             </div>
 
-            <div className="screen type-screen">
-              <div className="section-label">
-                <span>ELEMENT TYPE</span>
-              </div>
-              <div className="type-list">
-                <span className="type-badge grass">GRASS</span>
-                <span className="type-badge poison">POISON</span>
-              </div>
-              <div className="type-footer">DUAL TYPE</div>
-            </div>
-          </div>
-
-          <div className="box-section">
-            <div className="section-label">
-              <span>STORAGE SYSTEM</span>
-              <span className="box-label">BOX 01 / PREVIEW</span>
-            </div>
-
-            <div className="storage-grid">
-              {slots.map((slot) => (
-                <div className="storage-slot" key={slot}>
-                  <span className="slot-number">
-                    {String(slot).padStart(2, '0')}
+            {page !== 'home' && (
+              <div className="pd-page-heading">
+                <div>
+                  <span className="pd-eyebrow">
+                    POKÉDEX / {currentPage?.label.toUpperCase()}
                   </span>
-                  <span className="slot-symbol" aria-hidden="true">◇</span>
+
+                  <h2>
+                    {selectedPokemon
+                      ? selectedPokemon.name
+                      : currentPage?.label}
+                  </h2>
                 </div>
-              ))}
+
+                {selectedPokemon && (
+                  <button
+                    className="pd-back-button"
+                    type="button"
+                    onClick={() => setSelectedPokemon(null)}
+                  >
+                    ← Voltar ao catálogo
+                  </button>
+                )}
+              </div>
+            )}
+
+            <div
+              className={`pd-page-content ${page === 'home' ? 'pd-page-home' : ''
+                }`}
+            >
+              {renderPage()}
             </div>
+
+            <footer className="pd-display-footer">
+              <span>POKÉDEX SYSTEM / 2026</span>
+              <span>
+                {page === 'home'
+                  ? 'MENU PRINCIPAL'
+                  : currentPage?.label.toUpperCase()}
+              </span>
+            </footer>
+          </section>
+        </div>
+
+        <footer className="pd-hardware-footer">
+          <div className="pd-speaker" aria-hidden="true">
+            {Array.from({ length: 5 }, (_, index) => (
+              <span key={index} />
+            ))}
           </div>
 
-          <div className="screen info-screen">
-            <div className="section-label">
-              <span>DATABASE MODULES</span>
-              <span>PREVIEW</span>
-            </div>
-
-            <div className="modules-grid">
-              <div className="module-item">
-                <span>01</span>
-                <strong>Pokédex</strong>
-                <small>Catálogo</small>
-              </div>
-              <div className="module-item">
-                <span>02</span>
-                <strong>Trainers</strong>
-                <small>Treinadores</small>
-              </div>
-              <div className="module-item">
-                <span>03</span>
-                <strong>Compare</strong>
-                <small>Comparação</small>
-              </div>
-            </div>
+          <div className="pd-hardware-description">
+            <span className="pd-hardware-description-dot" />
+            <span>POKÉDEX / DIGITAL DATABASE</span>
           </div>
 
-          <div className="hardware-footer">
-            <div className="hardware-orb" aria-hidden="true" />
-            <div className="hardware-center">
-              <span>POKÉBOX SYSTEM</span>
-              <div className="hardware-leds">
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-              </div>
-            </div>
-            <div className="hardware-orb" aria-hidden="true" />
-          </div>
-        </section>
+          <button
+            type="button"
+            className="pd-home-control"
+            onClick={() => navigate('home')}
+            aria-label="Voltar à tela inicial"
+            title="Tela inicial"
+          >
+            <Icon name="home" />
+          </button>
+        </footer>
       </main>
-
-      <footer className="app-footer">
-        <span>POKÉBOX © 2026</span>
-        <span>POWERED BY REACT + VITE</span>
-      </footer>
     </div>
   )
 }
