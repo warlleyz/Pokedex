@@ -1,0 +1,24 @@
+.pk-comparison { min-width: 0; padding: clamp(14px, 2vw, 24px); border: 1px solid var(--screen-border); border-radius: 12px; background: var(--screen); color: var(--screen-text); }
+.pk-comparison-selectors, .pk-comparison-identities { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.pk-comparison-selectors label { display: grid; gap: 10px; min-width: 0; font-size: 13px; }
+.pk-comparison-selectors select { width: 100%; min-width: 0; min-height: 44px; padding: 10px; border: 1px solid var(--screen-border); border-radius: 8px; background: var(--screen-alt); color: var(--screen-text); font: inherit; }
+.pk-comparison-selectors select:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.pk-comparison-selectors select:disabled { opacity: 0.65; }
+.pk-comparison-message { color: var(--muted); font-size: 13px; line-height: 1.7; margin: 20px 0; }
+.pk-comparison-identities .pk-details { background: var(--screen-alt); }
+.pk-comparison-table { width: 100%; table-layout: fixed; border-collapse: collapse; margin-top: 26px; font-size: 13px; }
+.pk-comparison-table caption { margin-bottom: 14px; color: var(--muted); text-align: left; font-size: 12px; line-height: 1.6; }
+.pk-comparison-table th, .pk-comparison-table td { padding: 14px 12px; border-bottom: 1px solid var(--screen-border); text-align: left; vertical-align: middle; overflow-wrap: anywhere; }
+.pk-comparison-table th { color: var(--muted); font-weight: 600; }
+.pk-comparison-table thead th { color: var(--screen-text); }
+.pk-comparison-table td { font-variant-numeric: tabular-nums; }
+.pk-comparison-winner { background: var(--accent-soft); box-shadow: inset 3px 0 var(--accent); }
+.pk-comparison-winner strong, .pk-comparison-winner .pk-comparison-result { color: var(--accent); }
+.pk-comparison-result { display: block; min-height: 14px; margin-top: 7px; font-size: 11px; color: var(--muted); }
+.pk-comparison-track { display: block; height: 6px; overflow: hidden; margin-top: 9px; border-radius: 99px; background: var(--track); }
+.pk-comparison-track > span { display: block; height: 100%; border-radius: inherit; background: var(--accent); }
+@media (max-width: 600px) {
+  .pk-comparison-selectors, .pk-comparison-identities { grid-template-columns: 1fr; }
+  .pk-comparison-table { font-size: 12px; }
+  .pk-comparison-table th, .pk-comparison-table td { padding: 12px 7px; }
+}
